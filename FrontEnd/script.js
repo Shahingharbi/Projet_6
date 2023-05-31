@@ -1,3 +1,31 @@
+// Recupération du token pour se connecter //
+
+const edit = document.querySelector(".edit_mode ");
+const token = window.sessionStorage.getItem("token");
+const filtre = document.querySelector(".btn-filtre")
+const modifier = document.querySelectorAll(".modifier_container")
+const logout = document.querySelector("li a")
+
+  if (!token) {
+    edit.style.display = "none";
+    modifier.forEach((modifier) => {
+      modifier.style.display ="none";
+    })
+  } 
+
+  if (token) {
+    filtre.style.display = "none";
+    logout.innerHTML = "logout";
+    logout.addEventListener("click", () => {
+      window.sessionStorage.removeItem("token");
+    });
+  }
+
+
+
+
+ 
+  
 // Création de ma fonction pour l'appel a l'API //
 
 async function elementAPI() {
@@ -28,6 +56,8 @@ async function elementAPI() {
     console.log('Une erreur est survenue lors de la récupération des éléments :', error);
   }
 }
+
+elementAPI()
 
   // fonction pour afficher les travaux a partir de l'API // 
 
@@ -72,7 +102,30 @@ async function elementAPI() {
   createFilterButtons(btnFiltreContainer);
   
 
+// Modale //
+const modale = document.querySelector(".modale")
+const editing = document.querySelector(".modifier")
+editing.addEventListener("click" , () => {
+  console.log ('modale ouverte')
+  modaleOuverte(modale)
 
+})
+
+async function modaleOuverte (elements) {
+  const response = await fetch('http://localhost:5678/api/works');
+  const data = await response.json();
+  console.log (data)
+
+  for (let i = 0 ; i < elements.length ; i++) {
+    const element = elements[i];
+    const img = document.createElement("img")
+    img.src = element.imageUrl
+    modale.appendChild(img)
+    console.log(data.img)
+  }
+
+}
+modaleOuverte()
 
   
   

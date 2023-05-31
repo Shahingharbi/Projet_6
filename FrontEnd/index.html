@@ -7,10 +7,15 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/1f1f9e6035.js" crossorigin="anonymous"></script>
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="script.js" defer></script>
 </head>
+<div class="edit_mode">
+	<a href="#edit" class="modifier"><i class="fa-regular fa-pen-to-square"></i> </a> <p>Mode édition</p>
+	<a href="#" class="btn">Publier les changements</a>
+</div>
 <body>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
@@ -24,9 +29,23 @@
 	</nav>
 </header>
 <main>
+	
+
+	<div class="modale" id="edit">
+		<div class="modale_container">
+			<h3>Galerie photo</h3> 
+			<a href="#" class="modale_close">&times;</a>
+		</div>
+	</div>
+
 	<section id="introduction">
 		<figure>
+			
 			<img src="./assets/images/sophie-bluel.png" alt="">
+			<div class="modifier_container">
+				<a href="#edit" class="modifier"><i class="fa-regular fa-pen-to-square"></i> </a>
+				<div>Modifier</div>
+			</div>
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -36,7 +55,12 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="modifier_container">
+		<h2>Mes Projets</h2> <a href="#edit" class="modifier"><i class="fa-regular fa-pen-to-square"></i></a>
+		<div>Modifier</div>
+		</div>
+
+
 		<div class="btn-filtre">
 		  </div>
 		  
