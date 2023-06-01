@@ -22,9 +22,6 @@ const logout = document.querySelector("li a")
   }
 
 
-
-
- 
   
 // Création de ma fonction pour l'appel a l'API //
 
@@ -103,29 +100,74 @@ elementAPI()
   
 
 // Modale //
-const modale = document.querySelector(".modale")
-const editing = document.querySelector(".modifier")
-editing.addEventListener("click" , () => {
-  console.log ('modale ouverte')
-  modaleOuverte(modale)
 
-})
 
-async function modaleOuverte (elements) {
-  const response = await fetch('http://localhost:5678/api/works');
-  const data = await response.json();
-  console.log (data)
+const modaleSection = document.querySelector(".modale_section");
+const editing = document.querySelector(".modifier");
+const boutonContainer = document.createElement('div')
+const boutonPhoto = document.createElement ('a')
+const boutonSupprimer = document.createElement('a')
 
-  for (let i = 0 ; i < elements.length ; i++) {
-    const element = elements[i];
-    const img = document.createElement("img")
-    img.src = element.imageUrl
-    modale.appendChild(img)
-    console.log(data.img)
-  }
 
+const modale = document.getElementById('edit');
+modale.addEventListener('click', function(e) {
+    if (e.target === modale) {
+        window.location = '#';
+    }
+}); 
+
+boutonContainer.classList.add('bouton_container')
+
+boutonPhoto.classList.add ('bouton_photo')
+boutonPhoto.textContent = "Ajouter une photo"
+
+boutonSupprimer.classList.add ('bouton_supprimer')
+boutonSupprimer.textContent = "Supprimer la galerie"
+
+editing.addEventListener ("click" , afficherImagesGalerie);
+
+async function afficherImagesGalerie() {
+    const response = await fetch('http://localhost:5678/api/works');
+    const data = await response.json();
+
+    const div = document.createElement('div');
+    div.classList.add ('galerie_image');
+
+    data.forEach((element , index) => {
+      const imageContainer = document.createElement('div'); // Utilisation d'une div pour envelopper l'image et l'icône
+      const img = document.createElement('img');
+      const icone = document.createElement('i');
+      const editer = document.createElement('p');
+      editer.textContent = "éditer"
+      icone.classList.add('fa-solid', 'fa-trash-can');
+      imageContainer.classList.add('image_container')
+  
+      img.src = element.imageUrl;
+      img.alt = element.title;
+  
+      imageContainer.appendChild(img); // Ajout de l'image dans la div
+      imageContainer.appendChild(icone); // Ajout de l'icône dans la div
+      imageContainer.appendChild(editer)
+      div.appendChild(imageContainer); // Ajout de la div contenant l'image et l'icône à la galerie
+
+      if (index === 0 ) {
+        const iconeIndex = document.createElement('i')
+        iconeIndex.classList.add('fa-solid' , 'fa-arrows-up-down-left-right')
+        imageContainer.appendChild(iconeIndex) && imageContainer.appendChild(icone)
+      }
+    });
+    
+    modaleSection.appendChild(div);
+    modaleSection.appendChild(boutonContainer)
+    boutonContainer.appendChild(boutonPhoto)
+    boutonContainer.appendChild(boutonSupprimer)
+    editing.removeEventListener ("click" , afficherImagesGalerie)
 }
-modaleOuverte()
+
+
+boutonPhoto.addEventListener ('click' ,  () => {
+  console.log ("cliquer")
+});
 
   
   

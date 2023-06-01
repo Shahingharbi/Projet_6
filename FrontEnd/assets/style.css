@@ -326,13 +326,13 @@ footer nav ul {
 
 .modale_container {
 	background-color: white;
-	width: 50%;
+	width: 40%;
 	border-radius: 10px;
 	position: relative;
 }
 
 .modale_container h3 {
-	padding-top: 70px;
+	padding-top: 30px;
 	text-align: center;
 	font-size: 26px;
 }
@@ -341,10 +341,77 @@ footer nav ul {
 	position: absolute;
 	right: 30px;
 	top:  20px;
-}
-
-.modale_container a {
 	text-decoration: none;
 	color: black;
 	font-size: 35px;
+}
+
+.modale_container img {
+	width: 100%;
+}
+
+.modale_section {
+	padding: 30px 50px 15px ;
+}
+
+.modale_section .galerie_image {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #B3B3B3;
+}
+
+.bouton_container {
+	margin-top: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.bouton_photo {
+	text-align: center;
+	font-size: 14px;
+	font-family: Syne;
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	border-radius: 60px;
+	padding: 10px;
+	width: 50%;
+	cursor: pointer;
+}
+
+.bouton_supprimer {
+	color: #D65353;
+	margin-top: 20px;
+	font-family: Syne;
+	font-weight: 300;
+}
+
+.image_container .fa-trash-can {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	color: white;
+	background-color: black;
+	padding: 5px;
+	font-size: 10px;
+	border-radius: 2px;
+}
+
+.image_container {
+	position: relative;
+}
+
+.fa-arrows-up-down-left-right {
+	position: absolute;
+	top: 5px;
+	right: 25px;
+	color: white;
+	background-color: black;
+	padding: 5px;
+	font-size: 10px;
+	border-radius: 2px;
 }
