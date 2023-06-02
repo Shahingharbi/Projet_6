@@ -99,7 +99,7 @@ elementAPI()
   createFilterButtons(btnFiltreContainer);
   
 
-// Modale //
+/////////////////////////////// Modale  Galerie photo/////////////////////////////////////////
 
 
 const modaleSection = document.querySelector(".modale_section");
@@ -110,8 +110,8 @@ const boutonSupprimer = document.createElement('a')
 
 
 const modale = document.getElementById('edit');
-modale.addEventListener('click', function(e) {
-    if (e.target === modale) {
+modale.addEventListener('click', function(fermer) {
+    if (fermer.target === modale) {
         window.location = '#';
     }
 }); 
@@ -164,12 +164,17 @@ async function afficherImagesGalerie() {
     editing.removeEventListener ("click" , afficherImagesGalerie)
 }
 
+/////////////////////////// Modale ajout photo //////////////////////////////////
 
-boutonPhoto.addEventListener ('click' ,  () => {
-  console.log ("cliquer")
-});
+const modaleContainer = document.querySelector('.modale_container')
+const modales = document.querySelector('.modale')
+
+boutonPhoto.addEventListener('click' , () => {
+  console.log('clique')
+
 
   
+}) 
   
     
         
