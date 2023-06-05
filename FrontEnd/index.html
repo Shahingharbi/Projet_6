@@ -32,41 +32,41 @@
 	
 
 	<div class="modale" id="edit">
-		<div class="modale_container">
-			<h3>Galerie photo</h3> 
-			<a href="#" class="modale_close">&times;</a>
-			<div class="modale_section">
-			</div>
+		<div class="modale_container modale_container1">
+		  <h3>Galerie photo</h3>
+		  <a href="#" class="modale_close">&times;</a>
+		  <div class="modale_section">
+		  </div>
 		</div>
-	</div>
-
-	<div class="modale" id="editing">
-		<div class="modale_container">
-			<h3>Ajout photo</h3> 
-				<a href="#" class="modale_close">&times;</a>
-				<i class="fa-solid fa-arrow-left"></i>			
-					<div class="modale_section">
-						<div class="ajout_photo">
-							<i class="fa-sharp fa-regular fa-image"></i>
-							<label for="upload-photo" class="bouton_ajouter_photo"> + Ajouter une photo</label>
-							<input id="upload-photo" type="file" accept="image/jpeg, image/png" max-size="400000000">
-							<p class="info_photo">jpg, png : 4mo max</p>
-						</div>
-						<div class="label_container">
-							<label for="input_titre">Titre</label>
-							<input id = "input_titre" type="text">
-							<label for="input_categorie">Categorie</label>
-							<select id="input_categorie">
-								<option disabled selected></option>
-								<option value="Objets">Objets</option>
-								<option value="Appartements">Appartements</option>
-								<option value="Hotels & restaurants">Hotels & restaurants</option>
-							</select>
-						</div>
-							<div class="bouton_valider"><a href="">Valider</a></div>
-			 		</div>
-				</div>
+		
+		<div class="modale_container modale_container2">
+		  <h3>Ajout photo</h3>
+		  <a href="#" class="modale_close">&times;</a>
+		  <i class="fa-solid fa-arrow-left"></i>
+		  <div class="modale_section">
+			<div class="ajout_photo">
+			  <i class="fa-sharp fa-regular fa-image"></i>
+			  <label for="upload-photo" class="bouton_ajouter_photo"> + Ajouter une photo</label>
+			  <input id="upload-photo" type="file" accept="image/jpeg, image/png" max-size="400000000">
+			  <p class="info_photo">jpg, png : 4mo max</p>
 			</div>
+			<div class="label_container">
+			  <label for="input_titre">Titre</label>
+			  <input id="input_titre" type="text">
+			  <label for="input_categorie">Categorie</label>
+			  <select id="input_categorie">
+				<option disabled selected></option>
+				<option value="Objets">Objets</option>
+				<option value="Appartements">Appartements</option>
+				<option value="Hotels & restaurants">Hotels & restaurants</option>
+			  </select>
+			</div>
+			<div class="bouton_valider"><a href="">Valider</a></div>
+		  </div>
+		</div>
+	  </div>
+	  
+		
 
 	
 
@@ -77,7 +77,7 @@
 			
 			<img src="./assets/images/sophie-bluel.png" alt="">
 			<div class="modifier_container">
-				<a href="#editing" class="modifier"><i class="fa-regular fa-pen-to-square"></i> </a>
+				<a href="#edit" class="modifier"><i class="fa-regular fa-pen-to-square"></i> </a>
 				<div>Modifier</div>
 			</div>
 		</figure>

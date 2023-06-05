@@ -122,7 +122,7 @@ boutonPhoto.classList.add ('bouton_photo')
 boutonPhoto.textContent = "Ajouter une photo"
 
 boutonSupprimer.classList.add ('bouton_supprimer')
-boutonSupprimer.textContent = "Supprimer la galerie"
+boutonSupprimer.textContent = "Supprimer la galerie";
 
 editing.addEventListener ("click" , afficherImagesGalerie);
 
@@ -136,11 +136,12 @@ async function afficherImagesGalerie() {
     data.forEach((element , index) => {
       const imageContainer = document.createElement('div'); // Utilisation d'une div pour envelopper l'image et l'icône
       const img = document.createElement('img');
-      const icone = document.createElement('i');
       const editer = document.createElement('p');
-      editer.textContent = "éditer"
+      const icone = document.createElement('i');
       icone.classList.add('fa-solid', 'fa-trash-can');
-      imageContainer.classList.add('image_container')
+
+      editer.textContent = "éditer";
+      imageContainer.classList.add('image_container');
   
       img.src = element.imageUrl;
       img.alt = element.title;
@@ -155,10 +156,14 @@ async function afficherImagesGalerie() {
         iconeIndex.classList.add('fa-solid' , 'fa-arrows-up-down-left-right')
         imageContainer.appendChild(iconeIndex) && imageContainer.appendChild(icone)
       }
+          icone.addEventListener('click' , (event) => {
+            event.preventDefault();
+            supprimerTravaux(element.id)
+          })
     });
     
     modaleSection.appendChild(div);
-    modaleSection.appendChild(boutonContainer)
+    modaleSection.appendChild(boutonContainer )
     boutonContainer.appendChild(boutonPhoto)
     boutonContainer.appendChild(boutonSupprimer)
     editing.removeEventListener ("click" , afficherImagesGalerie)
@@ -166,16 +171,40 @@ async function afficherImagesGalerie() {
 
 /////////////////////////// Modale ajout photo //////////////////////////////////
 
-const modaleContainer = document.querySelector('.modale_container')
-const modales = document.querySelector('.modale')
+const modaleContainer1 = document.querySelector('.modale_container1');
+const modaleContainer2 = document.querySelector('.modale_container2');
 
 boutonPhoto.addEventListener('click' , () => {
-  console.log('clique')
-
-
-  
+  modaleContainer1.style.display = "none";
+  modaleContainer2.style.display = "block";
 }) 
   
-    
+const flecheGauche = document.querySelector('.fa-arrow-left')
+
+flecheGauche.addEventListener('click' , () => {
+  modaleContainer1.style.display = "block";
+  modaleContainer2.style.display = "none";
+})
+
+///////////////////// Supression travaux ////////////////////////////////
+
+async function supprimerTravaux (travailId) {
+
+  const response = await fetch ((`http://localhost:5678/api/works/${travailId}`), {
+    method : 'DELETE' ,
+    headers : {
+      'Accept' : 'application/json' ,
+      'Authorization' : `Bearer ${token}`
+    }
+  })
+  if (response.ok) {
+    const travailElement = document.getElementById(`travail-${travailId}`)
+    if (travailElement) {
+      travailElement.remove()
+    }
+  }
+}
+
+
         
 

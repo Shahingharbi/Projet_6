@@ -324,6 +324,7 @@ footer nav ul {
 	opacity: 1;
 }
 
+
 .modale_container {
 	background-color: white;
 	width: 40%;
@@ -331,11 +332,18 @@ footer nav ul {
 	position: relative;
 }
 
+.modale_container2 {
+	display: none;
+	
+}
+
 .modale_container h3 {
 	padding-top: 30px;
 	text-align: center;
 	font-size: 26px;
 }
+
+
 
 .modale_close {
 	position: absolute;
@@ -421,6 +429,7 @@ footer nav ul {
 	top : 25px;
 	left : 30px;
 	font-size: 25px;
+	cursor: pointer;
 }
 
 .ajout_photo {
