@@ -1,5 +1,7 @@
 const form = document.querySelector('form');
 const messageErreur = document.getElementById("erreur-message");
+messageErreur.innerHTML = ""
+
 const url = "http://localhost:5678/api/users/login";
 
 form.addEventListener('submit', async (event) => {
@@ -28,8 +30,9 @@ async function connexion () {
   if (data.userId && data.token) {
     window.sessionStorage.setItem("token", data.token);
     window.location.href = 'http://127.0.0.1:5500/FrontEnd/index.html';
+    messageErreur.innerHTML = ""
   } else {
-    messageErreur.textContent = "Erreur dans l'identifiant ou le mot de passe";
+    messageErreur.innerHTML = "Erreur dans l'identifiant ou le mot de passe";
     form.appendChild(messageErreur);
   }
 

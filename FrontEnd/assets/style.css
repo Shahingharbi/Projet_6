@@ -442,6 +442,14 @@ footer nav ul {
 	border-radius: 3px;
 }
 
+#photo {
+	padding: 0;
+}
+
+#image_upload {
+	max-width: 30%;
+}
+
 .bouton_ajouter_photo {
 	background-color: #CBD6DC;
 	padding: 10px;
@@ -498,7 +506,7 @@ input[type="file"] {
 	padding: 30px 0;
 }
 
-.bouton_valider a {
+.bouton_valider button {
 	background-color: #A7A7A7;
 	color: white;
 	border-radius: 60px;
@@ -507,6 +515,12 @@ input[type="file"] {
 	text-align: center;
 	font-weight: 700;
 	font-family: Syne;
+	border: none;
+	cursor: pointer;
 
 }
 
+#message_erreur {
+	text-align: center;
+	color: red;
+}
