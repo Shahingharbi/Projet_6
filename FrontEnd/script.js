@@ -32,6 +32,7 @@ async function elementAPI() {
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
     afficherElements(data);
+    
 
     // Écouteur d'événement pour les boutons de filtre
     const btnsFiltre = document.querySelectorAll('.btn-filtre .btn');
@@ -73,6 +74,8 @@ elementAPI()
       image.src = element.imageUrl;
       image.alt = element.title;
       titre.textContent = element.title;
+
+      figure.id = element.id; 
   
       figure.appendChild(image);
       figure.appendChild(titre);
@@ -110,6 +113,7 @@ const boutonContainer = document.createElement('div')
 const boutonPhoto = document.createElement ('a')
 const boutonSupprimer = document.createElement('a')
 
+// Fermer la modale au clique en dehors 
 
 const modale = document.getElementById('edit');
 modale.addEventListener('click', function(fermer) {
@@ -150,6 +154,8 @@ async function afficherImagesGalerie() {
   
       img.src = element.imageUrl;
       img.alt = element.title;
+
+      imageContainer.id = `travail-${element.id}`
   
       imageContainer.appendChild(img); // Ajout de l'image dans la div
       imageContainer.appendChild(icone); // Ajout de l'icône dans la div
@@ -167,6 +173,7 @@ async function afficherImagesGalerie() {
             console.log(element.id)
           })
           
+          
     });
     
     modaleSection.appendChild(div);
@@ -181,31 +188,37 @@ async function afficherImagesGalerie() {
 
 ///////////////////// Supression travaux ////////////////////////////////
 
-async function supprimerTravaux (travailId) {
-try {
-  const response = await fetch ((`http://localhost:5678/api/works/${travailId}`), {
-    method : 'DELETE' ,
-    headers : {
-      'Accept' : 'application/json' ,
-      'Authorization' : `Bearer ${token}`
+
+async function supprimerTravaux(travailId) {
+  try {
+    const response = await fetch(`http://localhost:5678/api/works/${travailId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const travailElement = document.getElementById(`travail-${travailId}`);
+      if (travailElement) {
+        travailElement.remove();
+      }
+
+      console.log(`ID de l'élément à supprimer : travail-${travailId}`);
+
+      const elementPrincipal = document.getElementById(travailId);
+      if (elementPrincipal) {
+        elementPrincipal.remove();
+      }
+    } else {
+      console.log('Erreur lors de la suppression du travail:', response.status);
     }
-  })
-  if (response.ok) {
-    const travailElement = document.createElement('div')
-    travailElement.id = `travail-${travailId}`
-    modaleSection.appendChild(travailElement)
-    
-    console.log(`ID de l'élément à supprimer : travail-${travailId}`);
-    console.log(travailElement)
-    if (travailElement) {
-      travailElement.remove()
-    }
-    
+
+    console.log(response);
+  } catch (error) {
+    console.log(error);
   }
-  console.log(response)
-} catch (error) {
-  console.log(error)
-}
 }
 
 
@@ -251,59 +264,85 @@ categoriesAPI()
   }
 
 // Evenement au moment du submit pour actionner ma fonction //
+const formImage = document.querySelector('#form_modale');
 
-  const formImage = document.querySelector('#form_modale')
+formImage.addEventListener('submit', async(event) => {
+  event.preventDefault();
+  const image = document.getElementById("upload-photo").files[0];
+  const titre = document.getElementById("input_titre").value;
+  const categorie = document.getElementById('input_categorie').value;
+  const messageErreur = document.getElementById ('message_erreur');
 
-  formImage.addEventListener('submit', async(event) => {
-    event.preventDefault()
-   const image = document.getElementById("upload-photo").files[0]
-   const titre = document.getElementById("input_titre").value
-   const categorie = document.getElementById('input_categorie').value
-   const messageErreur = document.getElementById ('message_erreur')
-
-
-   if (!image || !titre || !categorie) {
-    messageErreur.textContent = "Veuillez remplir le formulaire correctement"
-    } else {
-    messageErreur.textContent =""
-    await modaleAjoutPhoto()
-  }
-  
-  }) 
-
-// Fontion pour ajouter les travaux dans l'api //
-
-  async function modaleAjoutPhoto () {
-    try {
-    const image = document.getElementById("upload-photo").files[0]
-    const titre = document.getElementById("input_titre").value
-    const categorie = document.getElementById('input_categorie').value
-
-    const formData = new FormData()
-    formData.append("image" , image)
-    formData.append("title" , titre) 
-    formData.append("category", categorie)
- 
-    const response = await fetch (('http://localhost:5678/api/works') , {
+  if (!image || !titre || !categorie) {
+    messageErreur.textContent = "Veuillez remplir le formulaire correctement";
+  } else {
+    messageErreur.textContent = "";
+    const nouveauTravail = await modaleAjoutPhoto();
+    if (nouveauTravail) {
+      afficherElement(nouveauTravail);
+      formImage.reset();
+      imageUpload.src = "";
+      ajoutPhoto.style.display = "flex";
+      bouton.style.backgroundColor = "";
       
+    }
+  }
+});
+
+// Fonction pour ajouter les travaux dans l'API et retourner le nouveau travail ajouté
+async function modaleAjoutPhoto () {
+  try {
+    const image = document.getElementById("upload-photo").files[0];
+    const titre = document.getElementById("input_titre").value;
+    const categorie = document.getElementById('input_categorie').value;
+
+    const formData = new FormData();
+    formData.append("image" , image);
+    formData.append("title" , titre); 
+    formData.append("category", categorie);
+
+    const response = await fetch ('http://localhost:5678/api/works', {
       method : 'POST',
       headers : {
         'Accept' : 'application/json',
         'Authorization' : `Bearer ${token}`,
       } ,
       body : formData
-  
-    })
+    });
 
-    const data = await response.json();
-    console.log(data)
+    if (response.ok) {
+      const nouveauTravail = await response.json();
+      console.log(nouveauTravail); 
+            return nouveauTravail;
+    } else {
+      console.log('Erreur lors de l\'ajout du travail:', response.status);
+      return null;
+    }
     
-
-  } catch (error) {
-    console.log('erreur' , error)
-
+  } 
+  
+  catch (error) {
+    console.log('Erreur:', error);
+    return null;
   }
-  }
+}
+
+// Fonction pour afficher un seul élément à partir de l'API
+function afficherElement(element) {
+  const travauxContainer = document.querySelector('.gallery');
+  const figure = document.createElement('figure');
+  const image = document.createElement('img');
+  const titre = document.createElement('figcaption');
+
+  image.src = element.imageUrl;
+  image.alt = element.title;
+  titre.textContent = element.title;
+
+  figure.appendChild(image);
+  figure.appendChild(titre);
+  travauxContainer.appendChild(figure);
+}
+
 
 // Fonction pour afficher l'image sur l'input //
 
