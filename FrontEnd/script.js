@@ -1,5 +1,7 @@
 // Recupération du token pour se connecter //
 
+
+
 const edit = document.querySelector(".edit_mode ");
 const token = window.sessionStorage.getItem("token");
 const filtre = document.querySelector(".btn-filtre")
@@ -50,7 +52,7 @@ async function elementAPI() {
       
     });
   } catch (error) {
-    console.log('Une erreur est survenue lors de la récupération des éléments :', error);
+    console.log('Erreur:', error);
   }
 }
 
@@ -103,7 +105,7 @@ elementAPI()
 
 
 const modaleSection = document.querySelector(".modale_section");
-const editing = document.querySelector(".modifier");
+const editing = document.querySelectorAll(".modifier");
 const boutonContainer = document.createElement('div')
 const boutonPhoto = document.createElement ('a')
 const boutonSupprimer = document.createElement('a')
@@ -124,7 +126,10 @@ boutonPhoto.textContent = "Ajouter une photo"
 boutonSupprimer.classList.add ('bouton_supprimer')
 boutonSupprimer.textContent = "Supprimer la galerie";
 
-editing.addEventListener ("click" , afficherImagesGalerie);
+
+editing.forEach((bouton) => {
+  bouton.addEventListener('click' , afficherImagesGalerie)
+})
 
 async function afficherImagesGalerie() {
     const response = await fetch('http://localhost:5678/api/works');
@@ -156,24 +161,28 @@ async function afficherImagesGalerie() {
         iconeIndex.classList.add('fa-solid' , 'fa-arrows-up-down-left-right')
         imageContainer.appendChild(iconeIndex) && imageContainer.appendChild(icone)
       }
-          icone.addEventListener('click' , (event) => {
-            event.preventDefault();
+          icone.addEventListener('click' , (e) => {
+            e.preventDefault()
             supprimerTravaux(element.id)
             console.log(element.id)
           })
+          
     });
     
     modaleSection.appendChild(div);
     modaleSection.appendChild(boutonContainer )
     boutonContainer.appendChild(boutonPhoto)
     boutonContainer.appendChild(boutonSupprimer)
-    editing.removeEventListener ("click" , afficherImagesGalerie)
+
+    editing.forEach((bouton) => {
+      bouton.removeEventListener('click' , afficherImagesGalerie)
+    })
 }
 
 ///////////////////// Supression travaux ////////////////////////////////
 
 async function supprimerTravaux (travailId) {
-
+try {
   const response = await fetch ((`http://localhost:5678/api/works/${travailId}`), {
     method : 'DELETE' ,
     headers : {
@@ -182,12 +191,23 @@ async function supprimerTravaux (travailId) {
     }
   })
   if (response.ok) {
-    const travailElement = document.getElementById(`travail-${travailId}`)
+    const travailElement = document.createElement('div')
+    travailElement.id = `travail-${travailId}`
+    modaleSection.appendChild(travailElement)
+    
+    console.log(`ID de l'élément à supprimer : travail-${travailId}`);
+    console.log(travailElement)
     if (travailElement) {
       travailElement.remove()
     }
+    
   }
+  console.log(response)
+} catch (error) {
+  console.log(error)
 }
+}
+
 
 /////////////////////////// Modale ajout photo //////////////////////////////////
 
@@ -233,6 +253,7 @@ categoriesAPI()
 // Evenement au moment du submit pour actionner ma fonction //
 
   const formImage = document.querySelector('#form_modale')
+
   formImage.addEventListener('submit', async(event) => {
     event.preventDefault()
    const image = document.getElementById("upload-photo").files[0]
@@ -240,24 +261,17 @@ categoriesAPI()
    const categorie = document.getElementById('input_categorie').value
    const messageErreur = document.getElementById ('message_erreur')
 
+
    if (!image || !titre || !categorie) {
     messageErreur.textContent = "Veuillez remplir le formulaire correctement"
-  } else {
+    } else {
     messageErreur.textContent =""
     await modaleAjoutPhoto()
   }
-
-
-
-    
+  
   }) 
 
-
-
 // Fontion pour ajouter les travaux dans l'api //
-
-
-
 
   async function modaleAjoutPhoto () {
     try {
@@ -265,20 +279,11 @@ categoriesAPI()
     const titre = document.getElementById("input_titre").value
     const categorie = document.getElementById('input_categorie').value
 
-    if (image || titre || categorie) {
-      const bouton = document.getElementById('bouton')
-      bouton.style.backgroundColor = "green"
-    }
-     
-  
-      
-
     const formData = new FormData()
     formData.append("image" , image)
     formData.append("title" , titre) 
     formData.append("category", categorie)
  
-
     const response = await fetch (('http://localhost:5678/api/works') , {
       
       method : 'POST',
@@ -300,7 +305,7 @@ categoriesAPI()
   }
   }
 
-// Fonction pour afficher l'image //
+// Fonction pour afficher l'image sur l'input //
 
   const imageUpload = document.getElementById('image_upload');
   const ajoutPhoto = document.querySelector('.ajout_photo');
@@ -321,5 +326,28 @@ categoriesAPI()
     voirImage(this);
   });
 
+    // Changer la couleur du bouton en vert quand tout les éléments sont remplis correctement //
 
+    const bouton = document.querySelector('.bouton_valider button')
+    const imageInput = document.getElementById('upload-photo')
+    const titreInput = document.getElementById('input_titre')
+    const categorieInput = document.getElementById('input_categorie')
   
+    function changeCouleur () {
+      const imageValue = imageInput.files[0]
+      const titreValue = titreInput.value
+      const categorieValue = categorieInput.value
+      if (imageValue && titreValue && categorieValue) {
+        bouton.style.backgroundColor = "#1D6154"
+      } else {
+        bouton.style.backgroundColor = ""
+      }
+    }
+  
+    imageInput.addEventListener('change' , changeCouleur)
+    titreInput.addEventListener('change' , changeCouleur)
+    categorieInput.addEventListener('change' , changeCouleur)
+  
+
+
+

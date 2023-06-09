@@ -1,6 +1,9 @@
 const form = document.querySelector('form');
 const messageErreur = document.getElementById("erreur-message");
-messageErreur.innerHTML = ""
+
+messageErreur.textContent = ""
+form.appendChild(messageErreur);
+
 
 const url = "http://localhost:5678/api/users/login";
 
@@ -29,15 +32,11 @@ async function connexion () {
 
   if (data.userId && data.token) {
     window.sessionStorage.setItem("token", data.token);
-    window.location.href = 'http://127.0.0.1:5500/FrontEnd/index.html';
-    messageErreur.innerHTML = ""
+    window.location.href = './index.html';
   } else {
-    messageErreur.innerHTML = "Erreur dans l'identifiant ou le mot de passe";
-    form.appendChild(messageErreur);
+    messageErreur.innerText = "Erreur dans l'identifiant ou le mot de passe";
   }
+
 
 }
 
-
-
-connexion();
