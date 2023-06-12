@@ -285,6 +285,7 @@ formImage.addEventListener('submit', async(event) => {
       ajoutPhoto.style.display = "flex";
       bouton.style.backgroundColor = "";
       
+      
     }
   }
 });
@@ -312,6 +313,7 @@ async function modaleAjoutPhoto () {
 
     if (response.ok) {
       const nouveauTravail = await response.json();
+      afficherImageGalerie(nouveauTravail); // Ajouter le travail à la galerie
       console.log(nouveauTravail); 
             return nouveauTravail;
     } else {
@@ -326,10 +328,41 @@ async function modaleAjoutPhoto () {
     return null;
   }
 }
+function afficherImageGalerie(travail) {
+  const div = document.querySelector('.galerie_image'); // Sélectionnez l'élément de la galerie où vous souhaitez ajouter les images
+
+  const imageContainer = document.createElement('div');
+  const img = document.createElement('img');
+  const editer = document.createElement('p');
+  const icone = document.createElement('i');
+  icone.classList.add('fa-solid', 'fa-trash-can');
+
+  editer.textContent = "éditer";
+  imageContainer.classList.add('image_container');
+
+  img.src = travail.imageUrl;
+  img.alt = travail.title;
+
+  imageContainer.id = `travail-${travail.id}`
+
+  
+  icone.addEventListener('click' , (e) => {
+    e.preventDefault()
+    supprimerTravaux(travail.id)
+    console.log(travail.id)
+  })
+
+  imageContainer.appendChild(img);
+  imageContainer.appendChild(icone);
+  imageContainer.appendChild(editer);
+  div.appendChild(imageContainer);
+}
+
+
 
 // Fonction pour afficher un seul élément à partir de l'API
 function afficherElement(element) {
-  const travauxContainer = document.querySelector('.gallery');
+  const travauxContainer = document.querySelector('#gallery-container');
   const figure = document.createElement('figure');
   const image = document.createElement('img');
   const titre = document.createElement('figcaption');
