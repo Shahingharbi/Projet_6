@@ -204,13 +204,13 @@ async function supprimerTravaux(travailId) {
       if (travailElement) {
         travailElement.remove();
       }
+      const afficherTravail = await fetch('http://localhost:5678/api/works');
+      const travailPage = await afficherTravail.json();
+      afficherElements(travailPage);
+      
 
       console.log(`ID de l'élément à supprimer : travail-${travailId}`);
 
-      const elementPrincipal = document.getElementById(travailId);
-      if (elementPrincipal) {
-        elementPrincipal.remove();
-      }
     } else {
       console.log('Erreur lors de la suppression du travail:', response.status);
     }
@@ -328,8 +328,11 @@ async function modaleAjoutPhoto () {
     return null;
   }
 }
+
+// fonction pour afficher l'image ajouter à la galerie 
+
 function afficherImageGalerie(travail) {
-  const div = document.querySelector('.galerie_image'); // Sélectionnez l'élément de la galerie où vous souhaitez ajouter les images
+  const div = document.querySelector('.galerie_image'); 
 
   const imageContainer = document.createElement('div');
   const img = document.createElement('img');
@@ -344,6 +347,7 @@ function afficherImageGalerie(travail) {
   img.alt = travail.title;
 
   imageContainer.id = `travail-${travail.id}`
+  console.log(travail.id)
 
   
   icone.addEventListener('click' , (e) => {
@@ -352,6 +356,11 @@ function afficherImageGalerie(travail) {
     console.log(travail.id)
   })
 
+  const elementASupprimer = document.getElementById(`travail-${travail.id}`);
+  if (elementASupprimer) {
+    elementASupprimer.remove();
+  }
+
   imageContainer.appendChild(img);
   imageContainer.appendChild(icone);
   imageContainer.appendChild(editer);
@@ -359,8 +368,8 @@ function afficherImageGalerie(travail) {
 }
 
 
-
 // Fonction pour afficher un seul élément à partir de l'API
+
 function afficherElement(element) {
   const travauxContainer = document.querySelector('#gallery-container');
   const figure = document.createElement('figure');
